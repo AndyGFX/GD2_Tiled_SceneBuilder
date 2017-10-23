@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="2017.10.11" orientation="orthogonal" renderorder="left-up" width="42" height="27" tilewidth="16" tileheight="16" infinite="0" nextobjectid="11">
+<map version="1.0" tiledversion="2017.09.13" orientation="orthogonal" renderorder="left-up" width="42" height="27" tilewidth="16" tileheight="16" infinite="0" nextobjectid="23">
  <tileset firstgid="1" source="TestTileset.tsx"/>
  <tileset firstgid="65" source="Objects_Tileset.tsx"/>
  <layer name="Tile Layer 1" width="42" height="27">
@@ -20,5 +20,36 @@
   </object>
   <object id="7" name="PlayerStart" type="START_POINT" gid="65" x="224" y="352" width="16" height="16"/>
   <object id="9" name="NextLevel" type="END_POINT" gid="66" x="626" y="400" width="16" height="16"/>
+  <object id="13" name="Health" type="HEALTH" gid="68" x="254" y="227" width="16" height="16"/>
+  <object id="14" name="Ammo" type="AMMO" gid="69" x="132" y="256" width="16" height="16"/>
+  <object id="15" name="KEY_A" type="KEY" gid="70" x="154" y="314" width="16" height="16">
+   <properties>
+    <property name="key_name" value="KEY_A"/>
+   </properties>
+  </object>
+  <object id="16" name="PowerUpSpeed" type="POWER_UP_SPEED" gid="73" x="337" y="383" width="16" height="16"/>
+  <object id="17" name="PowerUpJump" type="POWER_UP_JUMP" gid="74" x="399" y="383" width="16" height="16"/>
+  <object id="18" name="PowerUpGrav" type="POWER_UP_GRAVITY" gid="75" x="448" y="382" width="16" height="16"/>
+  <object id="19" name="InfoMsg1" type="MSG_INFO" gid="81" x="304" y="321" width="16" height="16">
+   <properties>
+    <property name="info_text" value="Test msg info nanel"/>
+    <property name="panel_offset_x" type="int" value="8"/>
+    <property name="panel_offset_y" type="int" value="-45"/>
+   </properties>
+  </object>
+  <object id="20" name="Teleport_A" type="TELEPORT" gid="82" x="176" y="401" width="16" height="16">
+   <properties>
+    <property name="key_name" value="KEY_A"/>
+    <property name="need_key" type="bool" value="true"/>
+    <property name="target_name" value="Teleoprt_B"/>
+   </properties>
+  </object>
+  <object id="21" name="Teleport_B" type="TELEPORT" gid="82" x="386" y="266" width="16" height="16">
+   <properties>
+    <property name="key_name" value="KEY_A"/>
+    <property name="need_key" type="bool" value="true"/>
+    <property name="target_name" value="Teleport_A"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

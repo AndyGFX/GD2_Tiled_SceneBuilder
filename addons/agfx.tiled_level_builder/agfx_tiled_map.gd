@@ -406,6 +406,7 @@ func build():
 
 			for obj in l.objects:
 				if not obj.has("gid"):
+					
 					if obj.type == "navigation":
 						return "Invalid shape in object layer."
 
@@ -413,6 +414,7 @@ func build():
 					if typeof(shape) == TYPE_STRING:
 						return shape
 
+					
 					if obj.type == "occluder":
 						var occluder = LightOccluder2D.new()
 						if obj.has("name") and not obj.name.empty():
@@ -451,7 +453,7 @@ func build():
 							body.set_name(obj.name);
 						else:
 							body.set_name(str(obj.id))
-
+							
 						var collision
 						var offset = Vector2()
 						var rot_offset = 0
@@ -513,6 +515,7 @@ func build():
 
 						if options.custom_properties and obj.has("properties") and obj.has("propertytypes"):
 							_set_meta(body, obj.properties, obj.propertytypes)
+						
 				else: # if obj.has("gid"):
 					var tile_raw_id = int(obj.gid)
 					var tileid = tile_raw_id & ~(FLIPPED_HORIZONTALLY_FLAG | FLIPPED_VERTICALLY_FLAG | FLIPPED_DIAGONALLY_FLAG)
@@ -564,6 +567,13 @@ func build():
 					object.add_child(sprite)
 					sprite.set_owner(scene)
 
+					#AGFX add type to properties
+					if obj.has("type"):
+						sprite.set_meta("type",obj.type)
+					
+					#AGFX ToDo: Add missing (default) properties from Tiled objecttypes.xml
+					# ...
+					
 					if options.custom_properties:
 						var tile = _tile_from_gid(tile_raw_id)
 
@@ -575,7 +585,7 @@ func build():
 
 	if options.custom_properties and data.has("properties") and data.has("propertytypes"):
 		_set_meta(scene, data.properties, data.propertytypes)
-
+		
 	return "OK"
 
 func get_tilesets():
@@ -1059,7 +1069,7 @@ func _parse_object(parser):
 		if not attr in data:
 			data[attr] = 0
 	if not "type" in data:
-		data.type = ""
+		data.type = "undefined"		
 	if not "visible" in data:
 		data.visible = true
 

@@ -130,9 +130,7 @@
  </tile>
  <tile id="28">
   <objectgroup draworder="index">
-   <object id="1" x="0" y="0">
-    <polyline points="0,0 16,0 16,12 0,12 0,0"/>
-   </object>
+   <object id="2" x="0" y="0" width="16" height="12"/>
   </objectgroup>
  </tile>
  <tile id="29">
