@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=1]
 
-[ext_resource path="res://addons/vnen.tiled_importer/import_dialog.gd" type="Script" id=1]
+[ext_resource path="res://addons/agfx.tiled_level_builder/agfx_import_dialog.gd" type="Script" id=1]
 
 [node name="ImportTilemap" type="ConfirmationDialog"]
 

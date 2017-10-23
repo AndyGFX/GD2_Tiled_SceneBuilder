@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objecttypes>
+ <objecttype name="COIN" color="#ffff00">
+  <property name="item_amount" type="int" default="1"/>
+  <property name="item_id" type="int" default="0"/>
+  <property name="item_type" type="string" default="coins"/>
+ </objecttype>
+ <objecttype name="AMMO" color="#a0a0a4">
+  <property name="item_amount" type="int" default="10"/>
+  <property name="item_id" type="int" default="0"/>
+  <property name="item_type" type="string" default="ammo"/>
+ </objecttype>
+ <objecttype name="HEALTH" color="#ff0000">
+  <property name="item_amount" type="int" default="100"/>
+  <property name="item_id" type="int" default="0"/>
+  <property name="item_type" type="string" default="health"/>
+ </objecttype>
+ <objecttype name="START_POINT" color="#55aa00"/>
+ <objecttype name="END_POINT" color="#55aa00"/>
+</objecttypes>
