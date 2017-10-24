@@ -1,5 +1,12 @@
 extends Node
 
+var ent_coin = [
+	load("res://Entities/Coin/Entity_Coin_0.tscn"),
+	load("res://Entities/Coin/Entity_Coin_1.tscn"),
+	load("res://Entities/Coin/Entity_Coin_2.tscn"),
+	load("res://Entities/Coin/Entity_Coin_3.tscn")]
+
+
 # Traverse the node tree and replace Tiled objects
 func post_import(scene):
 
@@ -18,12 +25,13 @@ func post_import(scene):
 			for object in node.get_children():
 
 				# add default properties if missing
-				object = CheckProperties(object,object.get_meta("type"))
+				object = CheckProperties(object)
 
 				# dump entity data to console
-				DumpProperties(object,object.get_meta("type"))
+				DumpProperties(object)
 
 				# create scene node for entity
+				BuildEntity(scene,node,object)
 
 	# You must return the modified scene
 	return scene
@@ -31,7 +39,9 @@ func post_import(scene):
 # ---------------------------------------------------------
 # Prepare defaults
 # ---------------------------------------------------------
-func CheckProperties(obj,type):
+func CheckProperties(obj):
+
+	var type = obj.get_meta("type")
 
 	if type == "COIN":
 		if !obj.has_meta("item_amount"): obj.set_meta("item_amount",1)
@@ -84,8 +94,9 @@ func CheckProperties(obj,type):
 # ---------------------------------------------------------
 # Dump entity properties
 # ---------------------------------------------------------
-func DumpProperties(obj,type):
-	var prop = ""
+func DumpProperties(obj):
+
+	var type = obj.get_meta("type")
 
 	# COIN -----------------------------------------------------------------------
 
@@ -93,12 +104,9 @@ func DumpProperties(obj,type):
 		print("---------------------------------------------------------")
 		print("Entity: "+obj.get_name())
 		print("---------------------------------------------------------")
-		prop = "type"
-		if obj.has_meta(prop): print("    - "+prop+" = "+str(obj.get_meta(prop)))
-		prop = "item_amount"
-		if obj.has_meta(prop): print("    - "+prop+" = "+str(obj.get_meta(prop)))
-		prop = "item_id"
-		if obj.has_meta(prop): print("    - "+prop+" = "+str(obj.get_meta(prop)))
+		Dump(obj,"type")
+		Dump(obj,"item_amount")
+		Dump(obj,"item_id")
 
 	# AMMO -----------------------------------------------------------------------
 
@@ -106,12 +114,9 @@ func DumpProperties(obj,type):
 		print("---------------------------------------------------------")
 		print("Entity: "+obj.get_name())
 		print("---------------------------------------------------------")
-		prop = "type"
-		if obj.has_meta(prop): print("    - "+prop+" = "+str(obj.get_meta(prop)))
-		prop = "item_amount"
-		if obj.has_meta(prop): print("    - "+prop+" = "+str(obj.get_meta(prop)))
-		prop = "item_id"
-		if obj.has_meta(prop): print("    - "+prop+" = "+str(obj.get_meta(prop)))
+		Dump(obj,"type")
+		Dump(obj,"item_amount")
+		Dump(obj,"item_id")
 
 	# HEALTH -----------------------------------------------------------------------
 
@@ -119,12 +124,9 @@ func DumpProperties(obj,type):
 		print("---------------------------------------------------------")
 		print("Entity: "+obj.get_name())
 		print("---------------------------------------------------------")
-		prop = "type"
-		if obj.has_meta(prop): print("    - "+prop+" = "+str(obj.get_meta(prop)))
-		prop = "item_amount"
-		if obj.has_meta(prop): print("    - "+prop+" = "+str(obj.get_meta(prop)))
-		prop = "item_id"
-		if obj.has_meta(prop): print("    - "+prop+" = "+str(obj.get_meta(prop)))
+		Dump(obj,"type")
+		Dump(obj,"item_amount")
+		Dump(obj,"item_id")
 
 	# START_POINT -----------------------------------------------------------------------
 
@@ -132,8 +134,7 @@ func DumpProperties(obj,type):
 		print("---------------------------------------------------------")
 		print("Entity: "+obj.get_name())
 		print("---------------------------------------------------------")
-		prop = "type"
-		if obj.has_meta(prop): print("    - "+prop+" = "+str(obj.get_meta(prop)))
+		Dump(obj,"type")
 
 	# END_POINT -----------------------------------------------------------------------
 
@@ -141,8 +142,7 @@ func DumpProperties(obj,type):
 		print("---------------------------------------------------------")
 		print("Entity: "+obj.get_name())
 		print("---------------------------------------------------------")
-		prop = "type"
-		if obj.has_meta(prop): print("    - "+prop+" = "+str(obj.get_meta(prop)))
+		Dump(obj,"type")
 
 	# KEY -----------------------------------------------------------------------
 
@@ -150,12 +150,9 @@ func DumpProperties(obj,type):
 		print("---------------------------------------------------------")
 		print("Entity: "+obj.get_name())
 		print("---------------------------------------------------------")
-		prop = "type"
-		if obj.has_meta(prop): print("    - "+prop+" = "+str(obj.get_meta(prop)))
-		prop = "key_name"
-		if obj.has_meta(prop): print("    - "+prop+" = "+str(obj.get_meta(prop)))
-		prop = "item_id"
-		if obj.has_meta(prop): print("    - "+prop+" = "+str(obj.get_meta(prop)))
+		Dump(obj,"type")
+		Dump(obj,"key_name")
+		Dump(obj,"item_id")
 
 	# POWERUP_SPEED -----------------------------------------------------------------------
 
@@ -163,14 +160,10 @@ func DumpProperties(obj,type):
 		print("---------------------------------------------------------")
 		print("Entity: "+obj.get_name())
 		print("---------------------------------------------------------")
-		prop = "type"
-		if obj.has_meta(prop): print("    - "+prop+" = "+str(obj.get_meta(prop)))
-		prop = "item_id"
-		if obj.has_meta(prop): print("    - "+prop+" = "+str(obj.get_meta(prop)))
-		prop = "time_to_off"
-		if obj.has_meta(prop): print("    - "+prop+" = "+str(obj.get_meta(prop)))
-		prop = "new_speed"
-		if obj.has_meta(prop): print("    - "+prop+" = "+str(obj.get_meta(prop)))
+		Dump(obj,"type")
+		Dump(obj,"item_id")
+		Dump(obj,"time_to_off")
+		Dump(obj,"new_speed")
 
 	# POWERUP_JUMP -----------------------------------------------------------------------
 
@@ -178,14 +171,10 @@ func DumpProperties(obj,type):
 		print("---------------------------------------------------------")
 		print("Entity: "+obj.get_name())
 		print("---------------------------------------------------------")
-		prop = "type"
-		if obj.has_meta(prop): print("    - "+prop+" = "+str(obj.get_meta(prop)))
-		prop = "item_id"
-		if obj.has_meta(prop): print("    - "+prop+" = "+str(obj.get_meta(prop)))
-		prop = "time_to_off"
-		if obj.has_meta(prop): print("    - "+prop+" = "+str(obj.get_meta(prop)))
-		prop = "new_jump_force"
-		if obj.has_meta(prop): print("    - "+prop+" = "+str(obj.get_meta(prop)))
+		Dump(obj,"type")
+		Dump(obj,"item_id")
+		Dump(obj,"time_to_off")
+		Dump(obj,"new_jump_force")
 
 	# POWERUP_GRAVITY -----------------------------------------------------------------------
 
@@ -224,6 +213,46 @@ func DumpProperties(obj,type):
 		Dump(obj,"target_name")
 		Dump(obj,"teleport_type")
 
-
+# -------------------------------------------------------
+# Dump entity property to console
+# -------------------------------------------------------
 func Dump(obj,prop):
 	if obj.has_meta(prop): print("    - "+prop+" = "+str(obj.get_meta(prop)))
+
+# -------------------------------------------------------
+#
+# -------------------------------------------------------
+func BuildEntity(scene,node,obj):
+	var type = obj.get_meta("type")
+
+	if type == "COIN": Entity_COIN(scene,node,obj)
+
+# -------------------------------------------------------
+# COIN
+# -------------------------------------------------------
+func Entity_COIN(scene,node,obj):
+
+	var item_id = obj.get_meta("item_id")
+	var item_amount = obj.get_meta("item_amount")
+	var pos = obj.get_pos()
+	var name = obj.get_name()
+	
+	var coin = ent_coin[item_id].instance()
+	
+
+	obj.free()
+
+	coin.item_id = item_id
+	coin.item_amount = item_amount
+	#coin.texture_path = ent_coin[item_id].get_path().get_base_dir()+'/Coin_'+str(item_id)+'.png'
+	coin.set_name(name)
+	coin.set_pos(pos)
+	
+#	var tex = load(coin.texture_path)
+#	coin.get_node("Sprite").set_texture(tex)
+	
+	node.add_child(coin)
+	coin.set_owner(scene)
+
+	
+	
