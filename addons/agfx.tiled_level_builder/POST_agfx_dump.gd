@@ -1,5 +1,9 @@
 extends Node
 
+# ---------------------------------------------------------------------
+# entity type as list - item is defined via item_id
+# ---------------------------------------------------------------------
+
 var ent_coin = [
 	load("res://Entities/Coin/Entity_Coin_0.tscn"),
 	load("res://Entities/Coin/Entity_Coin_1.tscn"),
@@ -26,16 +30,21 @@ var ent_health = [
 
 
 var ent_gravity = [load("res://Entities/PowerUp_Gravity/Entity_PowerUpGravity_0.tscn")]
+
 var ent_jump = [load("res://Entities/PowerUp_Jump/Entity_PowerUpJump_0.tscn")]
 
+var ent_speed = [load("res://Entities/PowerUp_Speed/Entity_PowerUpSpeed_0.tscn")]
 
-# Traverse the node tree and replace Tiled objects
+var ent_infomsg = [load("res://Entities/InfoMsg/Entity_InfoMsg_0.tscn")]
+
+
+# ---------------------------------------------------------------------
+# Traverse the node tree and replace Tiled objects and Nodes
+# ---------------------------------------------------------------------
 func post_import(scene):
 
 	# Load scenes to instantiate and add to the level
-
-	# The scene variable contains the nodes as you see them in the editor.
-	# scene itself points to the top node. Its children are the tile and object layers.
+	
 	for node in scene.get_children():
 		# To know the type of a node, check if it is an instance of a base class
 		# The addon imports tile layers as TileMap nodes and object layers as Node2D
@@ -100,6 +109,7 @@ func CheckProperties(obj):
 
 	if type == "MSG_INFO":
 		if !obj.has_meta("info_text"): obj.set_meta("info_text","<undefined>")
+		if !obj.has_meta("item_id"): obj.set_meta("item_id",0)
 		if !obj.has_meta("panel_offset_x"): obj.set_meta("panel_offset_x",0)
 		if !obj.has_meta("panel_offset_y"): obj.set_meta("panel_offset_y",0)
 
@@ -121,7 +131,7 @@ func DumpProperties(obj):
 
 	var type = obj.get_meta("type")
 
-	# COIN -----------------------------------------------------------------------
+	# COIN ------------------------------------------------
 
 	if type == "COIN":
 		print("---------------------------------------------------------")
@@ -131,7 +141,7 @@ func DumpProperties(obj):
 		Dump(obj,"item_amount")
 		Dump(obj,"item_id")
 
-	# AMMO -----------------------------------------------------------------------
+	# AMMO ------------------------------------------------
 
 	if type == "AMMO":
 		print("---------------------------------------------------------")
@@ -141,7 +151,7 @@ func DumpProperties(obj):
 		Dump(obj,"item_amount")
 		Dump(obj,"item_id")
 
-	# HEALTH -----------------------------------------------------------------------
+	# HEALTH ----------------------------------------------
 
 	if type == "HEALTH":
 		print("---------------------------------------------------------")
@@ -152,7 +162,7 @@ func DumpProperties(obj):
 		Dump(obj,"item_limit")
 		Dump(obj,"item_id")
 
-	# START_POINT -----------------------------------------------------------------------
+	# START_POINT -----------------------------------------
 
 	if type == "START_POINT":
 		print("---------------------------------------------------------")
@@ -160,7 +170,7 @@ func DumpProperties(obj):
 		print("---------------------------------------------------------")
 		Dump(obj,"type")
 
-	# END_POINT -----------------------------------------------------------------------
+	# END_POINT -------------------------------------------
 
 	if type == "END_POINT":
 		print("---------------------------------------------------------")
@@ -168,7 +178,7 @@ func DumpProperties(obj):
 		print("---------------------------------------------------------")
 		Dump(obj,"type")
 
-	# KEY -----------------------------------------------------------------------
+	# KEY -------------------------------------------------
 
 	if type == "KEY":
 		print("---------------------------------------------------------")
@@ -178,7 +188,7 @@ func DumpProperties(obj):
 		Dump(obj,"key_name")
 		Dump(obj,"item_id")
 
-	# POWERUP_SPEED -----------------------------------------------------------------------
+	# POWERUP_SPEED ---------------------------------------
 
 	if type == "POWER_UP_SPEED":
 		print("---------------------------------------------------------")
@@ -189,7 +199,7 @@ func DumpProperties(obj):
 		Dump(obj,"time_to_off")
 		Dump(obj,"new_speed")
 
-	# POWERUP_JUMP -----------------------------------------------------------------------
+	# POWERUP_JUMP ----------------------------------------
 
 	if type == "POWER_UP_JUMP":
 		print("---------------------------------------------------------")
@@ -200,7 +210,7 @@ func DumpProperties(obj):
 		Dump(obj,"time_to_off")
 		Dump(obj,"new_jump_force")
 
-	# POWERUP_GRAVITY -----------------------------------------------------------------------
+	# POWERUP_GRAVITY -------------------------------------
 
 	if type == "POWER_UP_GRAVITY":
 		print("---------------------------------------------------------")
@@ -212,19 +222,20 @@ func DumpProperties(obj):
 		Dump(obj,"new_gravity_x")
 		Dump(obj,"new_gravity_y")
 
-	# MSG_INFO -----------------------------------------------------------------------
+	# MSG_INFO --------------------------------------------
 
 	if type == "MSG_INFO":
 		print("---------------------------------------------------------")
 		print("Entity: "+obj.get_name())
 		print("---------------------------------------------------------")
 		Dump(obj,"type")
+		Dump(obj,"item_id")
 		Dump(obj,"info_text")
 		Dump(obj,"panel_offset_x")
 		Dump(obj,"panel_offset_y")
 
 
-	# TELEPORT -----------------------------------------------------------------------
+	# TELEPORT --------------------------------------------
 
 	if type == "TELEPORT":
 		print("---------------------------------------------------------")
@@ -244,7 +255,7 @@ func Dump(obj,prop):
 	if obj.has_meta(prop): print("    - "+prop+" = "+str(obj.get_meta(prop)))
 
 # -------------------------------------------------------
-#
+# Build and replace objects in scene
 # -------------------------------------------------------
 func BuildEntity(scene,node,obj):
 	var type = obj.get_meta("type")
@@ -255,6 +266,8 @@ func BuildEntity(scene,node,obj):
 	if type == "HEALTH": Entity_HEALTH(scene,node,obj)
 	if type == "POWER_UP_GRAVITY": Entity_GRAVITY(scene,node,obj)
 	if type == "POWER_UP_JUMP": Entity_JUMP(scene,node,obj)
+	if type == "POWER_UP_SPEED": Entity_SPEED(scene,node,obj)
+	if type == "MSG_INFO": Entity_MSGINFO(scene,node,obj)
 
 # -------------------------------------------------------
 # COIN
@@ -421,3 +434,68 @@ func Entity_JUMP(scene,node,obj):
 
 	node.add_child(jump)
 	jump.set_owner(scene)
+
+# -------------------------------------------------------
+# POWERUP: SPEED
+# -------------------------------------------------------
+func Entity_SPEED(scene,node,obj):
+
+	var item_id = obj.get_meta("item_id")
+	if (item_id>ent_speed.size()):
+		print("ERROR: SPEED item ID > "+str(ent_speed.size()))
+
+	var time_to_off = obj.get_meta("time_to_off")
+	var new_speed = obj.get_meta("new_speed")
+	
+	var pos = obj.get_pos()
+	var name = obj.get_name()
+
+	var speed = ent_speed[item_id].instance()
+
+	obj.free()
+
+	speed.item_id = item_id
+	speed.time_to_off = time_to_off
+	speed.new_speed = new_speed
+
+	speed.set_name(name)
+	speed.set_pos(pos)
+
+	node.add_child(speed)
+	speed.set_owner(scene)
+	
+# -------------------------------------------------------
+# INFO MSG TEXT
+# -------------------------------------------------------
+func Entity_MSGINFO(scene,node,obj):
+
+	var item_id = obj.get_meta("item_id")
+	if (item_id>ent_infomsg.size()):
+		print("ERROR: INFO MSG item ID > "+str(ent_infomsg.size()))
+
+	# read meta data
+	var info_text = obj.get_meta("info_text")
+	var panel_offset_x = obj.get_meta("panel_offset_x")
+	var panel_offset_y = obj.get_meta("panel_offset_y")
+
+	var pos = obj.get_pos()
+	var name = obj.get_name()
+
+	# create entity instance
+	var msg = ent_infomsg[item_id].instance()
+
+	# free previous object
+	obj.free()
+
+	# set properties
+	msg.info_text = info_text
+	msg.panel_offset = Vector2(panel_offset_x,panel_offset_y)
+	
+
+	# set name and position
+	msg.set_name(name)
+	msg.set_pos(pos)
+
+	# add to scene under parent
+	node.add_child(msg)
+	msg.set_owner(scene)

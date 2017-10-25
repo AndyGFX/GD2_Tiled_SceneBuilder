@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="2017.10.11" orientation="orthogonal" renderorder="left-up" width="42" height="27" tilewidth="16" tileheight="16" infinite="0" nextobjectid="23">
+<map version="1.0" tiledversion="2017.09.13" orientation="orthogonal" renderorder="left-up" width="42" height="27" tilewidth="16" tileheight="16" infinite="0" nextobjectid="32">
  <tileset firstgid="1" source="TestTileset.tsx"/>
  <tileset firstgid="65" source="Objects_Tileset.tsx"/>
  <layer name="Tile Layer 1" width="42" height="27">
@@ -24,9 +24,13 @@
   </object>
   <object id="7" name="PlayerStart" type="START_POINT" gid="65" x="224" y="352" width="16" height="16"/>
   <object id="9" name="NextLevel" type="END_POINT" gid="66" x="626" y="400" width="16" height="16"/>
-  <object id="13" name="Health" type="HEALTH" gid="68" x="254" y="227" width="16" height="16"/>
-  <object id="14" name="Ammo" type="AMMO" gid="69" x="132" y="256" width="16" height="16"/>
-  <object id="15" name="KEY_A" type="KEY" gid="70" x="154" y="314" width="16" height="16">
+  <object id="13" name="Health" type="HEALTH" gid="68" x="254" y="227" width="16" height="16">
+   <properties>
+    <property name="item_id" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="14" name="Ammo" type="AMMO" gid="69" x="96" y="256" width="16" height="16"/>
+  <object id="15" name="KEY_A" type="KEY" gid="70" x="114" y="318" width="16" height="16">
    <properties>
     <property name="key_name" value="KEY_A"/>
    </properties>
@@ -53,6 +57,53 @@
     <property name="key_name" value="KEY_A"/>
     <property name="need_key" type="bool" value="true"/>
     <property name="target_name" value="Teleport_A"/>
+   </properties>
+  </object>
+  <object id="23" name="Health" type="HEALTH" gid="68" x="229" y="233" width="16" height="16"/>
+  <object id="24" name="Health" type="HEALTH" gid="68" x="278" y="234" width="16" height="16">
+   <properties>
+    <property name="item_id" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="25" name="Health" type="HEALTH" gid="68" x="300" y="246" width="16" height="16">
+   <properties>
+    <property name="item_id" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="26" name="Ammo" type="AMMO" gid="69" x="117" y="256" width="16" height="16">
+   <properties>
+    <property name="item_amount" type="int" value="25"/>
+    <property name="item_id" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="27" name="Ammo" type="AMMO" gid="69" x="138" y="255" width="16" height="16">
+   <properties>
+    <property name="item_amount" type="int" value="40"/>
+    <property name="item_id" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="28" name="Ammo" type="AMMO" gid="69" x="159" y="256" width="16" height="16">
+   <properties>
+    <property name="item_amount" type="int" value="50"/>
+    <property name="item_id" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="29" name="KEY_D" type="KEY" gid="70" x="135" y="318" width="16" height="16">
+   <properties>
+    <property name="item_id" type="int" value="3"/>
+    <property name="key_name" value="KEY_D"/>
+   </properties>
+  </object>
+  <object id="30" name="KEY_C" type="KEY" gid="70" x="156" y="318" width="16" height="16">
+   <properties>
+    <property name="item_id" type="int" value="2"/>
+    <property name="key_name" value="KEY_C"/>
+   </properties>
+  </object>
+  <object id="31" name="KEY_B" type="KEY" gid="70" x="177" y="319" width="16" height="16">
+   <properties>
+    <property name="item_id" type="int" value="1"/>
+    <property name="key_name" value="KEY_B"/>
    </properties>
   </object>
  </objectgroup>
