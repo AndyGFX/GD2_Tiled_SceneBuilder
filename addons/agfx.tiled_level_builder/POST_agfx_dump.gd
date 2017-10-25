@@ -6,6 +6,28 @@ var ent_coin = [
 	load("res://Entities/Coin/Entity_Coin_2.tscn"),
 	load("res://Entities/Coin/Entity_Coin_3.tscn")]
 
+var ent_key = [
+	load("res://Entities/Key/Entity_Key_0.tscn"),
+	load("res://Entities/Key/Entity_Key_1.tscn"),
+	load("res://Entities/Key/Entity_Key_2.tscn"),
+	load("res://Entities/Key/Entity_Key_3.tscn")]
+
+var ent_ammo = [
+	load("res://Entities/Ammo/Entity_Ammo_0.tscn"),
+	load("res://Entities/Ammo/Entity_Ammo_1.tscn"),
+	load("res://Entities/Ammo/Entity_Ammo_2.tscn"),
+	load("res://Entities/Ammo/Entity_Ammo_3.tscn")]
+
+var ent_health = [
+	load("res://Entities/Health/Entity_Health_0.tscn"),
+	load("res://Entities/Health/Entity_Health_1.tscn"),
+	load("res://Entities/Health/Entity_Health_2.tscn"),
+	load("res://Entities/Health/Entity_Health_3.tscn")]
+
+
+var ent_gravity = [load("res://Entities/PowerUp_Gravity/Entity_PowerUpGravity_0.tscn")]
+var ent_jump = [load("res://Entities/PowerUp_Jump/Entity_PowerUpJump_0.tscn")]
+
 
 # Traverse the node tree and replace Tiled objects
 func post_import(scene):
@@ -53,6 +75,7 @@ func CheckProperties(obj):
 
 	if type == "HEALTH":
 		if !obj.has_meta("item_amount"): obj.set_meta("item_amount",100)
+		if !obj.has_meta("item_limit"): obj.set_meta("item_limit",100)
 		if !obj.has_meta("item_id"): obj.set_meta("item_id",0)
 
 	if type == "KEY":
@@ -126,6 +149,7 @@ func DumpProperties(obj):
 		print("---------------------------------------------------------")
 		Dump(obj,"type")
 		Dump(obj,"item_amount")
+		Dump(obj,"item_limit")
 		Dump(obj,"item_id")
 
 	# START_POINT -----------------------------------------------------------------------
@@ -226,6 +250,11 @@ func BuildEntity(scene,node,obj):
 	var type = obj.get_meta("type")
 
 	if type == "COIN": Entity_COIN(scene,node,obj)
+	if type == "KEY": Entity_KEY(scene,node,obj)
+	if type == "AMMO": Entity_AMMO(scene,node,obj)
+	if type == "HEALTH": Entity_HEALTH(scene,node,obj)
+	if type == "POWER_UP_GRAVITY": Entity_GRAVITY(scene,node,obj)
+	if type == "POWER_UP_JUMP": Entity_JUMP(scene,node,obj)
 
 # -------------------------------------------------------
 # COIN
@@ -233,26 +262,162 @@ func BuildEntity(scene,node,obj):
 func Entity_COIN(scene,node,obj):
 
 	var item_id = obj.get_meta("item_id")
+	if (item_id>ent_coin.size()):
+		print("ERROR: COIN item ID > "+str(ent_coin.size()))
+
 	var item_amount = obj.get_meta("item_amount")
 	var pos = obj.get_pos()
 	var name = obj.get_name()
-	
+
 	var coin = ent_coin[item_id].instance()
-	
 
 	obj.free()
 
 	coin.item_id = item_id
 	coin.item_amount = item_amount
-	#coin.texture_path = ent_coin[item_id].get_path().get_base_dir()+'/Coin_'+str(item_id)+'.png'
+
 	coin.set_name(name)
 	coin.set_pos(pos)
-	
-#	var tex = load(coin.texture_path)
-#	coin.get_node("Sprite").set_texture(tex)
-	
+
 	node.add_child(coin)
 	coin.set_owner(scene)
 
+# -------------------------------------------------------
+# KEY
+# -------------------------------------------------------
+func Entity_KEY(scene,node,obj):
+
+	var item_id = obj.get_meta("item_id")
+	if (item_id>ent_key.size()):
+		print("ERROR: KEY item ID > "+str(ent_key.size()))
+
+	var key_name = obj.get_meta("key_name")
+	var pos = obj.get_pos()
+	var name = obj.get_name()
+
+	var key = ent_key[item_id].instance()
+
+	obj.free()
+
+	key.item_id = item_id
+	key.key_name = key_name
+
+	key.set_name(name)
+	key.set_pos(pos)
+
+	node.add_child(key)
+	key.set_owner(scene)
+
+# -------------------------------------------------------
+# AMMO
+# -------------------------------------------------------
+func Entity_AMMO(scene,node,obj):
+
+	var item_id = obj.get_meta("item_id")
+	if (item_id>ent_ammo.size()):
+		print("ERROR: AMMO item ID > "+str(ent_ammo.size()))
+
+	var item_amount = obj.get_meta("item_amount")
+	var pos = obj.get_pos()
+	var name = obj.get_name()
+
+	var ent = ent_ammo[item_id].instance()
+
+	obj.free()
+
+	ent.item_id = item_id
+	ent.item_amount = item_amount
+
+	ent.set_name(name)
+	ent.set_pos(pos)
+
+	node.add_child(ent)
+	ent.set_owner(scene)
+
+# -------------------------------------------------------
+# HEALTH
+# -------------------------------------------------------
+func Entity_HEALTH(scene,node,obj):
+
+	var item_id = obj.get_meta("item_id")
+	if (item_id>ent_health.size()):
+		print("ERROR: HEALTH item ID > "+str(ent_health.size()))
+
+	var item_amount = obj.get_meta("item_amount")
+	var item_limit = obj.get_meta("item_limit")
+	var pos = obj.get_pos()
+	var name = obj.get_name()
+
+	var health = ent_health[item_id].instance()
+
+	obj.free()
+
+	health.item_id = item_id
+	health.item_amount = item_amount
+	health.item_limit = item_limit
+
+	health.set_name(name)
+	health.set_pos(pos)
+
+	node.add_child(health)
+	health.set_owner(scene)
+
+# -------------------------------------------------------
+# POWERUP: GRAVITY
+# -------------------------------------------------------
+func Entity_GRAVITY(scene,node,obj):
+
+	var item_id = obj.get_meta("item_id")
+	if (item_id>ent_gravity.size()):
+		print("ERROR: GRAVITY item ID > "+str(ent_gravity.size()))
+
+
+	var time_to_off = obj.get_meta("time_to_off")
+	var new_gravity_x = obj.get_meta("new_gravity_x")
+	var new_gravity_y = obj.get_meta("new_gravity_y")
+
+	var pos = obj.get_pos()
+	var name = obj.get_name()
+
+	var gravity = ent_gravity[item_id].instance()
+
+	obj.free()
+
+	gravity.item_id = item_id
+	gravity.time_to_off = time_to_off
+	gravity.new_gravity = Vector2(new_gravity_x,new_gravity_y)
+
+	gravity.set_name(name)
+	gravity.set_pos(pos)
+
+	node.add_child(gravity)
+	gravity.set_owner(scene)
+
+# -------------------------------------------------------
+# POWERUP: JUMP
+# -------------------------------------------------------
+func Entity_JUMP(scene,node,obj):
+
+	var item_id = obj.get_meta("item_id")
+	if (item_id>ent_jump.size()):
+		print("ERROR: GRAVITY item ID > "+str(ent_jump.size()))
+
+	var time_to_off = obj.get_meta("time_to_off")
+	var new_jump_force = obj.get_meta("new_jump_force")
 	
-	
+	var pos = obj.get_pos()
+	var name = obj.get_name()
+
+	var jump = ent_jump[item_id].instance()
+
+	obj.free()
+
+	jump.item_id = item_id
+	jump.time_to_off = time_to_off
+	jump.new_jump_force = new_jump_force
+
+	jump.set_name(name)
+	jump.set_pos(pos)
+
+	node.add_child(jump)
+	jump.set_owner(scene)
