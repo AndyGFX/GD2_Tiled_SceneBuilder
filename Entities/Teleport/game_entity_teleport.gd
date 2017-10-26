@@ -7,6 +7,8 @@ export var on_key = "<undefiend>"
 export var need_key = false
 export var teleport_type = 0
 
+var eventOwner = null
+
 func _ready():
 
 	pass
