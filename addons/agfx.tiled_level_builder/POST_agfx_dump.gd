@@ -37,6 +37,16 @@ var ent_speed = [load("res://Entities/PowerUp_Speed/Entity_PowerUpSpeed_0.tscn")
 
 var ent_infomsg = [load("res://Entities/InfoMsg/Entity_InfoMsg_0.tscn")]
 
+var ent_startpoint = [load("res://Entities/StartPoint/Entity_StartPoint_0.tscn")]
+
+var ent_endpoint = [load("res://Entities/EndPoint/Entity_EndPoint_0.tscn")]
+
+
+var ent_teleport = [
+	load("res://Entities/Teleport/Entity_Teleport_0.tscn"),
+	load("res://Entities/Teleport/Entity_Teleport_1.tscn"),
+	load("res://Entities/Teleport/Entity_Teleport_2.tscn"),
+	load("res://Entities/Teleport/Entity_Teleport_3.tscn")]
 
 # ---------------------------------------------------------------------
 # Traverse the node tree and replace Tiled objects and Nodes
@@ -44,7 +54,7 @@ var ent_infomsg = [load("res://Entities/InfoMsg/Entity_InfoMsg_0.tscn")]
 func post_import(scene):
 
 	# Load scenes to instantiate and add to the level
-	
+
 	for node in scene.get_children():
 		# To know the type of a node, check if it is an instance of a base class
 		# The addon imports tile layers as TileMap nodes and object layers as Node2D
@@ -117,10 +127,17 @@ func CheckProperties(obj):
 	if type == "TELEPORT":
 		if !obj.has_meta("key_name"): obj.set_meta("key_name","<undefined>")
 		if !obj.has_meta("need_key"): obj.set_meta("need_key",false)
-		if !obj.has_meta("key_name"): obj.set_meta("key_name","<undefined>")
 		if !obj.has_meta("on_key"): obj.set_meta("on_key","key_up")
 		if !obj.has_meta("target_name"): obj.set_meta("target_name","<undefined>")
 		if !obj.has_meta("teleport_type"): obj.set_meta("teleport_type",0)
+		if !obj.has_meta("item_id"): obj.set_meta("item_id",0)
+
+	if type == "START_POINT":
+		if !obj.has_meta("item_id"): obj.set_meta("item_id",0)
+
+	if type == "END_POINT":
+		if !obj.has_meta("item_id"): obj.set_meta("item_id",0)
+		if !obj.has_meta("next_scene"): obj.set_meta("next_scene","<undefined>")
 
 	return obj
 
@@ -169,6 +186,7 @@ func DumpProperties(obj):
 		print("Entity: "+obj.get_name())
 		print("---------------------------------------------------------")
 		Dump(obj,"type")
+		Dump(obj,"item_id")
 
 	# END_POINT -------------------------------------------
 
@@ -177,6 +195,8 @@ func DumpProperties(obj):
 		print("Entity: "+obj.get_name())
 		print("---------------------------------------------------------")
 		Dump(obj,"type")
+		Dump(obj,"item_id")
+		Dump(obj,"next_scene")
 
 	# KEY -------------------------------------------------
 
@@ -242,6 +262,7 @@ func DumpProperties(obj):
 		print("Entity: "+obj.get_name())
 		print("---------------------------------------------------------")
 		Dump(obj,"type")
+		Dump(obj,"item_id")
 		Dump(obj,"key_name")
 		Dump(obj,"need_key")
 		Dump(obj,"on_key")
@@ -268,6 +289,9 @@ func BuildEntity(scene,node,obj):
 	if type == "POWER_UP_JUMP": Entity_JUMP(scene,node,obj)
 	if type == "POWER_UP_SPEED": Entity_SPEED(scene,node,obj)
 	if type == "MSG_INFO": Entity_MSGINFO(scene,node,obj)
+	if type == "START_POINT": Entity_STARTPOINT(scene,node,obj)
+	if type == "END_POINT": Entity_ENDPOINT(scene,node,obj)
+	if type == "TELEPORT": Entity_TELEPORT(scene,node,obj)
 
 # -------------------------------------------------------
 # COIN
@@ -417,7 +441,7 @@ func Entity_JUMP(scene,node,obj):
 
 	var time_to_off = obj.get_meta("time_to_off")
 	var new_jump_force = obj.get_meta("new_jump_force")
-	
+
 	var pos = obj.get_pos()
 	var name = obj.get_name()
 
@@ -446,7 +470,7 @@ func Entity_SPEED(scene,node,obj):
 
 	var time_to_off = obj.get_meta("time_to_off")
 	var new_speed = obj.get_meta("new_speed")
-	
+
 	var pos = obj.get_pos()
 	var name = obj.get_name()
 
@@ -463,7 +487,7 @@ func Entity_SPEED(scene,node,obj):
 
 	node.add_child(speed)
 	speed.set_owner(scene)
-	
+
 # -------------------------------------------------------
 # INFO MSG TEXT
 # -------------------------------------------------------
@@ -490,7 +514,7 @@ func Entity_MSGINFO(scene,node,obj):
 	# set properties
 	msg.info_text = info_text
 	msg.panel_offset = Vector2(panel_offset_x,panel_offset_y)
-	
+
 
 	# set name and position
 	msg.set_name(name)
@@ -499,3 +523,105 @@ func Entity_MSGINFO(scene,node,obj):
 	# add to scene under parent
 	node.add_child(msg)
 	msg.set_owner(scene)
+
+# -------------------------------------------------------
+# START POINT
+# -------------------------------------------------------
+func Entity_STARTPOINT(scene,node,obj):
+	var item_id = obj.get_meta("item_id")
+	if (item_id>ent_startpoint.size()):
+		print("ERROR: START POINT item ID > "+str(ent_startpoint.size()))
+
+	# read meta data
+	#
+	var pos = obj.get_pos()
+	var name = obj.get_name()
+
+	# create entity instance
+	var starpoint = ent_startpoint[item_id].instance()
+
+	# free previous object
+	obj.free()
+
+	# set properties
+
+
+	# set name and position
+	starpoint.set_name(name)
+	starpoint.set_pos(pos)
+
+	# add to scene under parent
+	node.add_child(starpoint)
+	starpoint.set_owner(scene)
+
+# -------------------------------------------------------
+# END POINT
+# -------------------------------------------------------
+func Entity_ENDPOINT(scene,node,obj):
+	var item_id = obj.get_meta("item_id")
+	if (item_id>ent_endpoint.size()):
+		print("ERROR: END POINT item ID > "+str(ent_endpoint.size()))
+
+	# read meta data
+	#
+	var pos = obj.get_pos()
+	var name = obj.get_name()
+
+	# create entity instance
+	var endpoint = ent_endpoint[item_id].instance()
+
+	# free previous object
+	obj.free()
+
+	# set properties
+
+
+	# set name and position
+	endpoint.set_name(name)
+	endpoint.set_pos(pos)
+
+	# add to scene under parent
+	node.add_child(endpoint)
+	endpoint.set_owner(scene)
+
+# -------------------------------------------------------
+# TELEPORT
+# -------------------------------------------------------
+
+func Entity_TELEPORT(scene,node,obj):
+	var item_id = obj.get_meta("item_id")
+	if (item_id>ent_teleport.size()):
+		print("ERROR: TELEPORT item ID > "+str(ent_teleport.size()))
+
+	# read meta data
+
+	var key_name = obj.get_meta("key_name")
+	var need_key = obj.get_meta("need_key")
+	var on_key = obj.get_meta("on_key")
+	var target_name = obj.get_meta("target_name")
+	var teleport_type = obj.get_meta("teleport_type")
+
+	var pos = obj.get_pos()
+	var name = obj.get_name()
+
+	# create entity instance
+	var teleport = ent_teleport[item_id].instance()
+
+	# free previous object
+	obj.free()
+
+	# set properties
+
+	teleport.key_name = key_name
+	teleport.need_key = need_key
+	teleport.on_key = on_key
+	teleport.target_name = target_name
+	teleport.teleport_type = teleport_type
+
+	# set name and position
+	teleport.set_name(name)
+	teleport.set_pos(pos)
+
+	# add to scene under parent
+	node.add_child(teleport)
+	teleport.set_owner(scene)

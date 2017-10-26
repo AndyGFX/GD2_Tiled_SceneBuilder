@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="2017.09.13" orientation="orthogonal" renderorder="left-up" width="42" height="27" tilewidth="16" tileheight="16" infinite="0" nextobjectid="32">
+<map version="1.0" tiledversion="2017.10.11" orientation="orthogonal" renderorder="left-up" width="42" height="27" tilewidth="16" tileheight="16" infinite="0" nextobjectid="32">
  <tileset firstgid="1" source="TestTileset.tsx"/>
  <tileset firstgid="65" source="Objects_Tileset.tsx"/>
  <layer name="Tile Layer 1" width="42" height="27">
@@ -49,7 +49,7 @@
    <properties>
     <property name="key_name" value="KEY_A"/>
     <property name="need_key" type="bool" value="true"/>
-    <property name="target_name" value="Teleoprt_B"/>
+    <property name="target_name" value="Teleport_B"/>
    </properties>
   </object>
   <object id="21" name="Teleport_B" type="TELEPORT" gid="82" x="386" y="266" width="16" height="16">
