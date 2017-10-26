@@ -1,7 +1,7 @@
 extends Area2D
 
 var item_id = 0
-
+var item_type = "start_point"
 #------------------------------------------------
 # Hide icon on start
 #------------------------------------------------
