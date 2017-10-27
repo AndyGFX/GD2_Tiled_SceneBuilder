@@ -20,7 +20,7 @@ editor/display_folded = true
 
 [node name="Light2D" type="Light2D" parent="."]
 
-transform/pos = Vector2( 277, 307 )
+transform/pos = Vector2( 262, 302 )
 enabled = true
 editor_only = false
 texture = ExtResource( 2 )
