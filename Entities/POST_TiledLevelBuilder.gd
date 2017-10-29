@@ -48,6 +48,10 @@ var ent_teleport = [
 	load("res://Entities/Teleport/Entity_Teleport_2.tscn"),
 	load("res://Entities/Teleport/Entity_Teleport_3.tscn")]
 
+var ent_enemy_h = [
+	load("res://Entities/Enemies/Enemy_H/Entity_Enemy_0.tscn"),
+	load("res://Entities/Enemies/Enemy_H/Entity_Enemy_1.tscn")]
+
 # ---------------------------------------------------------------------
 # Traverse the node tree and replace Tiled objects and Nodes
 # ---------------------------------------------------------------------
@@ -61,7 +65,12 @@ func post_import(scene):
 		if node extends TileMap:
 			# Process tile layers. E.g. read the ID of the individual tiles and
 			# replace them with random variations, or instantiate scenes on top of them
-			pass
+			if node.has_meta("TYPE"):
+				var type = node.get_meta("TYPE")
+
+				if type == "SOLID":
+					node.add_to_group("SOLID",true)
+
 		if node extends Node2D:
 			for object in node.get_children():
 
@@ -139,6 +148,11 @@ func CheckProperties(obj):
 		Check(obj,"item_id",0)
 		Check(obj,"next_scene","<undefined>")
 
+	if type == "ENEMY_H":
+		Check(obj,"armor",25)
+		Check(obj,"item_id",0)
+		Check(obj,"damage",10)
+		Check(obj,"speed",20)
 	return obj
 
 # ---------------------------------------------------------
@@ -269,6 +283,15 @@ func DumpProperties(obj):
 		Dump(obj,"target_name")
 		Dump(obj,"teleport_type")
 
+	if type == "ENEMY_H":
+		print("---------------------------------------------------------")
+		print("Entity: "+obj.get_name())
+		print("---------------------------------------------------------")
+		Dump(obj,"type")
+		Dump(obj,"armor")
+		Dump(obj,"item_id")
+		Dump(obj,"damage")
+		Dump(obj,"speed")
 # -------------------------------------------------------
 # Helpert for dump entity property to console
 # -------------------------------------------------------
@@ -280,7 +303,7 @@ func Dump(obj,prop):
 # -------------------------------------------------------
 func Check(obj,prop,val):
 	if !obj.has_meta(prop): obj.set_meta(prop,val)
-	
+
 # -------------------------------------------------------
 # Build and replace objects in scene
 # -------------------------------------------------------
@@ -298,6 +321,8 @@ func BuildEntity(scene,node,obj):
 	if type == "START_POINT": Entity_STARTPOINT(scene,node,obj)
 	if type == "END_POINT": Entity_ENDPOINT(scene,node,obj)
 	if type == "TELEPORT": Entity_TELEPORT(scene,node,obj)
+	if type == "ENEMY_H": Entity_ENEMY_H(scene,node,obj)
+	
 
 # -------------------------------------------------------
 # COIN
@@ -631,3 +656,42 @@ func Entity_TELEPORT(scene,node,obj):
 	# add to scene under parent
 	node.add_child(teleport)
 	teleport.set_owner(scene)
+	
+	
+# -------------------------------------------------------
+# ENEMY with HORIZONTAL MOVE
+# -------------------------------------------------------
+
+func Entity_ENEMY_H(scene,node,obj):
+	var item_id = obj.get_meta("item_id")
+	if (item_id>ent_enemy_h.size()):
+		print("ERROR: ENEMY item ID > "+str(ent_enemy_h.size()))
+
+	# read meta data
+
+	var speed = obj.get_meta("speed")
+	var armor = obj.get_meta("armor")
+	var damage = obj.get_meta("damage")
+	
+	var pos = obj.get_pos()
+	var name = obj.get_name()
+
+	# create entity instance
+	var enemy = ent_enemy_h[item_id].instance()
+
+	# free previous object
+	obj.free()
+
+	# set properties
+
+	enemy.speed = speed
+	enemy.armor = armor
+	enemy.damage = damage
+	
+	# set name and position
+	enemy.set_name(name)
+	enemy.set_pos(pos)
+
+	# add to scene under parent
+	node.add_child(enemy)
+	enemy.set_owner(scene)	
