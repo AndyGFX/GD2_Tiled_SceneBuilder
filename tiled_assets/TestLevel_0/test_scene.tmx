@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="2017.10.11" orientation="orthogonal" renderorder="left-up" width="42" height="27" tilewidth="16" tileheight="16" infinite="0" nextobjectid="57">
+<map version="1.0" tiledversion="2017.10.11" orientation="orthogonal" renderorder="left-up" width="42" height="27" tilewidth="16" tileheight="16" infinite="0" nextobjectid="59">
  <tileset firstgid="1" source="TestTileset.tsx"/>
  <tileset firstgid="65" source="Objects_Tileset.tsx"/>
  <layer name="Layer-BACK" width="42" height="27">
@@ -136,5 +136,7 @@
     <property name="key_name" value="KEY_B"/>
    </properties>
   </object>
+  <object id="57" gid="89" x="176" y="241" width="16" height="16"/>
+  <object id="58" name="LightSwitch" type="SWITCH" gid="97" x="464" y="288" width="16" height="16"/>
  </objectgroup>
 </map>
