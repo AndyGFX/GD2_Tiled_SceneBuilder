@@ -10,7 +10,7 @@ export var target_name = "<undefined>"
 var item_type = "switch"
 
 #------------------------------------------------
-# Enter to zone
+# Initialize on start
 #------------------------------------------------
 func _ready():
 	if get_tree().is_editor_hint():
