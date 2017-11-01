@@ -746,7 +746,7 @@ func Entity_LIGHT(scene,node,obj):
 
 	# set properties
 	light.set_color(color)
-	
+	light.get_node("Sprite").set_modulate(Color(color))
 
 	# set name and position
 	light.set_name(name)

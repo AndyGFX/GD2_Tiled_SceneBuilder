@@ -10,12 +10,12 @@ shader/shading_mode = 0
 
 [node name="Test_TMX" parent="." instance=ExtResource( 1 )]
 
-editor/display_folded = true
 material/material = SubResource( 1 )
 
-[node name="Entities" parent="Test_TMX"]
+[node name="Occluders" parent="Test_TMX"]
 
 editor/display_folded = true
 
 
 [editable path="Test_TMX"]
+[editable path="Test_TMX/Entities/Light 2"]
