@@ -54,7 +54,6 @@ func CheckProperties(obj):
 		Check(obj,"item_amount",1)
 		Check(obj,"item_id",0)
 
-
 	if type == "HEALTH":
 		Check(obj,"item_amount",100)
 		Check(obj,"item_limit",100)
@@ -108,6 +107,14 @@ func CheckProperties(obj):
 		Check(obj,"damage",10)
 		Check(obj,"speed",20)
 
+	if type == "ENEMY_V":
+		Check(obj,"armor",25)
+		Check(obj,"item_id",0)
+		Check(obj,"damage",10)
+		Check(obj,"speed",20)
+		Check(obj,"top_end_point",16)
+		Check(obj,"bottom_end_point",16)
+		
 	if type == "SWITCH":
 		Check(obj,"item_id",0)
 		Check(obj,"callback","<undefined>")
@@ -270,10 +277,23 @@ func DumpProperties(obj):
 		Dump(obj,"damage")
 		Dump(obj,"speed")
 
+	if type == "ENEMY_V":
+		print("---------------------------------------------------------")
+		print("Entity: "+obj.get_name())
+		print("---------------------------------------------------------")
+		Dump(obj,"type")
+		Dump(obj,"armor")
+		Dump(obj,"item_id")
+		Dump(obj,"damage")
+		Dump(obj,"speed")
+		Dump(obj,"top_end_point")
+		Dump(obj,"bottom_end_point")
+		
 	if type == "SWITCH":
 		print("---------------------------------------------------------")
 		print("Entity: "+obj.get_name())
 		print("---------------------------------------------------------")
+		Dump(obj,"type")
 		Dump(obj,"item_id")
 		Dump(obj,"callback")
 		Dump(obj,"key_name")
@@ -285,6 +305,7 @@ func DumpProperties(obj):
 		print("---------------------------------------------------------")
 		print("Entity: "+obj.get_name())
 		print("---------------------------------------------------------")
+		Dump(obj,"type")
 		Dump(obj,"item_id")
 		Dump(obj,"color")
 
@@ -319,6 +340,7 @@ func BuildEntity(scene,node,obj):
 	if type == "END_POINT": Entity_ENDPOINT(scene,node,obj)
 	if type == "TELEPORT": Entity_TELEPORT(scene,node,obj)
 	if type == "ENEMY_H": Entity_ENEMY_H(scene,node,obj)
+	if type == "ENEMY_V": Entity_ENEMY_V(scene,node,obj)
 	if type == "SWITCH": Entity_SWITCH(scene,node,obj)
 	if type == "LIGHT": Entity_LIGHT(scene,node,obj)
 
@@ -684,13 +706,13 @@ func Entity_TELEPORT(scene,node,obj):
 
 
 # -------------------------------------------------------
-# ENEMY with HORIZONTAL MOVE
+# ENEMY with HORIZONTAL MOVEMENT
 # -------------------------------------------------------
 
 func Entity_ENEMY_H(scene,node,obj):
 	var item_id = obj.get_meta("item_id")
 	if (item_id>ent_enemy_h.size()):
-		print("ERROR: ENEMY item ID > "+str(ent_enemy_h.size()))
+		print("ERROR: ENEMY H item ID > "+str(ent_enemy_h.size()))
 
 	# read meta data
 
@@ -721,6 +743,44 @@ func Entity_ENEMY_H(scene,node,obj):
 	node.add_child(enemy)
 	enemy.set_owner(scene)
 
+# -------------------------------------------------------
+# ENEMY with VERTICAL MOVEMENT
+# -------------------------------------------------------
+
+func Entity_ENEMY_V(scene,node,obj):
+	var item_id = obj.get_meta("item_id")
+	if (item_id>ent_enemy_v.size()):
+		print("ERROR: ENEMY V item ID > "+str(ent_enemy_v.size()))
+
+	# read meta data
+
+	var speed = obj.get_meta("speed")
+	var armor = obj.get_meta("armor")
+	var damage = obj.get_meta("damage")
+
+	var pos = obj.get_pos()
+	var name = obj.get_name()
+
+	# create entity instance
+	var enemy = ent_enemy_v[item_id].instance()
+
+	# free previous object
+	obj.free()
+
+	# set properties
+
+	enemy.speed = speed
+	enemy.armor = armor
+	enemy.damage = damage
+
+	# set name and position
+	enemy.set_name(name)
+	enemy.set_pos(pos)
+
+	# add to scene under parent
+	node.add_child(enemy)
+	enemy.set_owner(scene)
+	
 # -------------------------------------------------------
 # SWITCH: call defiend method on node with defined state OnEnter o OnKeyPressed
 # -------------------------------------------------------

@@ -93,13 +93,19 @@ var ent_teleport = [
 	load("res://Entities/Teleport/Entity_Teleport_3.tscn")]
 
 # ---------------------------------------------------------------------
-# ENEMY with HORIZONTALY movement
+# ENEMY with HORIZONTAL movement
 # ---------------------------------------------------------------------
 
 var ent_enemy_h = [
-	load("res://Entities/Enemies/Enemy_H/Entity_Enemy_0.tscn"),
-	load("res://Entities/Enemies/Enemy_H/Entity_Enemy_1.tscn")]
+	load("res://Entities/Enemies/Enemy_H/Entity_Enemy_H_0.tscn")]
 
+# ---------------------------------------------------------------------
+# ENEMY with VERTICAL movement
+# ---------------------------------------------------------------------
+
+var ent_enemy_v = [
+	load("res://Entities/Enemies/Enemy_V/Entity_Enemy_V_0.tscn")]
+	
 # ---------------------------------------------------------------------
 # SWITCH
 # ---------------------------------------------------------------------
