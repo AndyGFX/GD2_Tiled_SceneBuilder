@@ -835,8 +835,7 @@ func Entity_LIGHT(scene,node,obj):
 		print("ERROR: INFO MSG item ID > "+str(ent_light.size()))
 
 	# read meta data
-	var color = obj.get_meta("color")
-	print(str(color))
+	var color = obj.get_meta("color")	
 	var pos = obj.get_pos()
 	var name = obj.get_name()
 

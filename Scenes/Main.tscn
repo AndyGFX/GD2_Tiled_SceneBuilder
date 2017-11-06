@@ -12,6 +12,10 @@ shader/shading_mode = 0
 
 material/material = SubResource( 1 )
 
+[node name="Occluders" parent="Test_TMX"]
+
+editor/display_folded = true
+
 
 [editable path="Test_TMX"]
 [editable path="Test_TMX/Entities/Light 2"]
