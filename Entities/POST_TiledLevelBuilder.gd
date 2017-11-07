@@ -114,7 +114,7 @@ func CheckProperties(obj):
 		Check(obj,"speed",20)
 		Check(obj,"top_end_point",16)
 		Check(obj,"bottom_end_point",16)
-		
+
 	if type == "SWITCH":
 		Check(obj,"item_id",0)
 		Check(obj,"callback","<undefined>")
@@ -123,10 +123,23 @@ func CheckProperties(obj):
 		Check(obj,"switch_mode","OnEnter")   # OnEnter / OnKey
 		Check(obj,"target_name","<undefined>")
 
-	if type == "LIGHT":		
+	if type == "LIGHT":
 		Check(obj,"item_id",0)
 		Check(obj,"color","#ffffffff")
-		
+
+	if type == "PLATFORM_H":
+		Check(obj,"item_id",0)
+		Check(obj,"left_end_point",0)
+		Check(obj,"right_end_point",0)
+		Check(obj,"speed",0)
+
+	if type == "PLATFORM_V":
+		Check(obj,"item_id",0)
+		Check(obj,"top_end_point",0)
+		Check(obj,"bottom_end_point",0)
+		Check(obj,"speed",0)
+
+
 	return obj
 
 # ---------------------------------------------------------
@@ -165,7 +178,7 @@ func DumpProperties(obj):
 		Dump(obj,"type")
 		Dump(obj,"item_amount")
 		Dump(obj,"item_id")
-		
+
 	# HEALTH ----------------------------------------------
 
 	if type == "HEALTH":
@@ -288,7 +301,7 @@ func DumpProperties(obj):
 		Dump(obj,"speed")
 		Dump(obj,"top_end_point")
 		Dump(obj,"bottom_end_point")
-		
+
 	if type == "SWITCH":
 		print("---------------------------------------------------------")
 		print("Entity: "+obj.get_name())
@@ -308,6 +321,26 @@ func DumpProperties(obj):
 		Dump(obj,"type")
 		Dump(obj,"item_id")
 		Dump(obj,"color")
+
+	if type == "PLATFROM_H":
+		print("---------------------------------------------------------")
+		print("Entity: "+obj.get_name())
+		print("---------------------------------------------------------")
+		Dump(obj,"type")
+		Dump(obj,"item_id")
+		Dump(obj,"left_end_point")
+		Dump(obj,"right_end_point")
+		Dump(obj,"speed")
+
+	if type == "PLATFROM_V":
+		print("---------------------------------------------------------")
+		print("Entity: "+obj.get_name())
+		print("---------------------------------------------------------")
+		Dump(obj,"type")
+		Dump(obj,"item_id")
+		Dump(obj,"top_end_point")
+		Dump(obj,"bottom_end_point")
+		Dump(obj,"speed")
 
 # -------------------------------------------------------
 # Helpert for dump entity property to console
@@ -343,6 +376,7 @@ func BuildEntity(scene,node,obj):
 	if type == "ENEMY_V": Entity_ENEMY_V(scene,node,obj)
 	if type == "SWITCH": Entity_SWITCH(scene,node,obj)
 	if type == "LIGHT": Entity_LIGHT(scene,node,obj)
+	if type == "PLATFORM_H": Entity_PLATFORM_H(scene,node,obj)
 
 
 # -------------------------------------------------------
@@ -448,7 +482,7 @@ func Entity_GRANADE(scene,node,obj):
 
 	node.add_child(ent)
 	ent.set_owner(scene)
-	
+
 # -------------------------------------------------------
 # HEALTH
 # -------------------------------------------------------
@@ -780,7 +814,7 @@ func Entity_ENEMY_V(scene,node,obj):
 	# add to scene under parent
 	node.add_child(enemy)
 	enemy.set_owner(scene)
-	
+
 # -------------------------------------------------------
 # SWITCH: call defiend method on node with defined state OnEnter o OnKeyPressed
 # -------------------------------------------------------
@@ -824,7 +858,7 @@ func Entity_SWITCH(scene,node,obj):
 	# add to scene under parent
 	node.add_child(sw)
 	sw.set_owner(scene)
-	
+
 # -------------------------------------------------------
 # INFO MSG TEXT
 # -------------------------------------------------------
@@ -835,7 +869,7 @@ func Entity_LIGHT(scene,node,obj):
 		print("ERROR: INFO MSG item ID > "+str(ent_light.size()))
 
 	# read meta data
-	var color = obj.get_meta("color")	
+	var color = obj.get_meta("color")
 	var pos = obj.get_pos()
 	var name = obj.get_name()
 
@@ -855,5 +889,40 @@ func Entity_LIGHT(scene,node,obj):
 
 	# add to scene under parent
 	node.add_child(light)
-	light.set_owner(scene)	
-	
+	light.set_owner(scene)
+
+# -------------------------------------------------------
+# INFO MSG TEXT
+# -------------------------------------------------------
+func Entity_PLATFORM_H(scene,node,obj):
+
+	var item_id = obj.get_meta("item_id")
+	if (item_id>ent_platform_h.size()):
+		print("ERROR: PLATFORM H item ID > "+str(ent_platform_h.size()))
+
+	# read meta data
+	var left_end_point = obj.get_meta("left_end_point")
+	var right_end_point = obj.get_meta("right_end_point")
+	var speed = obj.get_meta("speed")
+	var pos = obj.get_pos()
+	var name = obj.get_name()
+
+	# create entity instance
+	var platform = ent_platform_h[item_id].instance()
+
+	# free previous object
+	obj.free()
+
+	# set properties
+	platform.speed = speed
+	platform.left_end_point = left_end_point
+	platform.right_end_point = right_end_point
+
+	# set name and position
+	platform.set_name(name)
+	platform.set_pos(pos)
+
+	# add to scene under parent
+	node.add_child(platform)
+	platform.set_owner(scene)
+

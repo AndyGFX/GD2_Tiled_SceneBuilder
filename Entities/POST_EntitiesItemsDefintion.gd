@@ -119,3 +119,11 @@ var ent_switch = [
 
 var ent_light = [
 	load("res://Entities/Light/Entity_Light2D_0.tscn")]
+
+# ---------------------------------------------------------------------
+# PLATFORMS
+# ---------------------------------------------------------------------
+
+var ent_platform_h = [
+	load("res://Entities/Platform/Platform_H/Entity_platform_H.tscn")]
+	
