@@ -126,4 +126,6 @@ var ent_light = [
 
 var ent_platform_h = [
 	load("res://Entities/Platform/Platform_H/Entity_platform_H.tscn")]
+var ent_platform_v = [
+	load("res://Entities/Platform/Platform_V/Entity_platform_V.tscn")]	
 	

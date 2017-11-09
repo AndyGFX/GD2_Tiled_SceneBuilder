@@ -35,6 +35,31 @@ func post_import(scene):
 	# You must return the modified scene
 	return scene
 
+# -------------------------------------------------------
+# Build and replace objects in scene
+# -------------------------------------------------------
+func BuildEntity(scene,node,obj):
+	var type = obj.get_meta("type")
+
+	if type == "COIN": Entity_COIN(scene,node,obj)
+	if type == "KEY": Entity_KEY(scene,node,obj)
+	if type == "AMMO": Entity_AMMO(scene,node,obj)
+	if type == "GRANADE": Entity_GRANADE(scene,node,obj)
+	if type == "HEALTH": Entity_HEALTH(scene,node,obj)
+	if type == "POWER_UP_GRAVITY": Entity_GRAVITY(scene,node,obj)
+	if type == "POWER_UP_JUMP": Entity_JUMP(scene,node,obj)
+	if type == "POWER_UP_SPEED": Entity_SPEED(scene,node,obj)
+	if type == "MSG_INFO": Entity_MSGINFO(scene,node,obj)
+	if type == "START_POINT": Entity_STARTPOINT(scene,node,obj)
+	if type == "END_POINT": Entity_ENDPOINT(scene,node,obj)
+	if type == "TELEPORT": Entity_TELEPORT(scene,node,obj)
+	if type == "ENEMY_H": Entity_ENEMY_H(scene,node,obj)
+	if type == "ENEMY_V": Entity_ENEMY_V(scene,node,obj)
+	if type == "SWITCH": Entity_SWITCH(scene,node,obj)
+	if type == "LIGHT": Entity_LIGHT(scene,node,obj)
+	if type == "PLATFORM_H": Entity_PLATFORM_H(scene,node,obj)
+	if type == "PLATFORM_V": Entity_PLATFORM_V(scene,node,obj)
+
 # ---------------------------------------------------------
 # Prepare defaults
 # ---------------------------------------------------------
@@ -354,29 +379,7 @@ func Dump(obj,prop):
 func Check(obj,prop,val):
 	if !obj.has_meta(prop): obj.set_meta(prop,val)
 
-# -------------------------------------------------------
-# Build and replace objects in scene
-# -------------------------------------------------------
-func BuildEntity(scene,node,obj):
-	var type = obj.get_meta("type")
 
-	if type == "COIN": Entity_COIN(scene,node,obj)
-	if type == "KEY": Entity_KEY(scene,node,obj)
-	if type == "AMMO": Entity_AMMO(scene,node,obj)
-	if type == "GRANADE": Entity_GRANADE(scene,node,obj)
-	if type == "HEALTH": Entity_HEALTH(scene,node,obj)
-	if type == "POWER_UP_GRAVITY": Entity_GRAVITY(scene,node,obj)
-	if type == "POWER_UP_JUMP": Entity_JUMP(scene,node,obj)
-	if type == "POWER_UP_SPEED": Entity_SPEED(scene,node,obj)
-	if type == "MSG_INFO": Entity_MSGINFO(scene,node,obj)
-	if type == "START_POINT": Entity_STARTPOINT(scene,node,obj)
-	if type == "END_POINT": Entity_ENDPOINT(scene,node,obj)
-	if type == "TELEPORT": Entity_TELEPORT(scene,node,obj)
-	if type == "ENEMY_H": Entity_ENEMY_H(scene,node,obj)
-	if type == "ENEMY_V": Entity_ENEMY_V(scene,node,obj)
-	if type == "SWITCH": Entity_SWITCH(scene,node,obj)
-	if type == "LIGHT": Entity_LIGHT(scene,node,obj)
-	if type == "PLATFORM_H": Entity_PLATFORM_H(scene,node,obj)
 
 
 # -------------------------------------------------------
@@ -892,7 +895,7 @@ func Entity_LIGHT(scene,node,obj):
 	light.set_owner(scene)
 
 # -------------------------------------------------------
-# INFO MSG TEXT
+# PLATFORM MOVE HORIZONTALY
 # -------------------------------------------------------
 func Entity_PLATFORM_H(scene,node,obj):
 
@@ -917,6 +920,41 @@ func Entity_PLATFORM_H(scene,node,obj):
 	platform.speed = speed
 	platform.left_end_point = left_end_point
 	platform.right_end_point = right_end_point
+
+	# set name and position
+	platform.set_name(name)
+	platform.set_pos(pos)
+
+	# add to scene under parent
+	node.add_child(platform)
+	platform.set_owner(scene)
+	
+# -------------------------------------------------------
+# PLATFORM MOVE VERTICALY
+# -------------------------------------------------------
+func Entity_PLATFORM_V(scene,node,obj):
+
+	var item_id = obj.get_meta("item_id")
+	if (item_id>ent_platform_v.size()):
+		print("ERROR: PLATFORM V item ID > "+str(ent_platform_v.size()))
+
+	# read meta data
+	var top_end_point = obj.get_meta("top_end_point")
+	var bottom_end_point = obj.get_meta("bottom_end_point")
+	var speed = obj.get_meta("speed")
+	var pos = obj.get_pos()
+	var name = obj.get_name()
+
+	# create entity instance
+	var platform = ent_platform_v[item_id].instance()
+
+	# free previous object
+	obj.free()
+
+	# set properties
+	platform.speed = speed
+	platform.top_end_point = top_end_point
+	platform.bottom_end_point = bottom_end_point
 
 	# set name and position
 	platform.set_name(name)

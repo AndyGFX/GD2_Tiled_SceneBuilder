@@ -160,7 +160,7 @@
     <property name="right_end_point" type="int" value="64"/>
    </properties>
   </object>
-  <object id="78" name="PlatformVertical" type="PLATFROM_V" gid="84" x="128" y="192" width="16" height="16">
+  <object id="78" name="PlatformVertical" type="PLATFORM_V" gid="84" x="128" y="192" width="16" height="16">
    <properties>
     <property name="bottom_end_point" type="int" value="80"/>
     <property name="speed" type="int" value="100"/>
