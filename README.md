@@ -79,6 +79,16 @@ Create scene from Tiled tmx file, using extended vnen.tiled_importer.
   - **item_id** type= int default= 0 <br>
   - **speed** type= int default= 20 <br><br>
 
+- **ENEMY_V**
+
+  - **armor** type= int default= 50 <br>
+  - **damage** type= int default= 10 <br>
+  - **item_id** type= int default= 0 <br>
+  - **speed** type= int default= 20 <br>
+  - **top_end_point** type= int default= 16 <br>
+  - **bottom_end_point** type= int default= 16 <br><br>
+
+
 - **SWITCH**
 
   - **callback** type= string default = undefined <br>
@@ -92,3 +102,27 @@ Create scene from Tiled tmx file, using extended vnen.tiled_importer.
 
   - **color** type= color default= #ffffffff <br>
   - **item_id** type= int default= 0 <br><br>
+
+- **GRANADE**
+
+ - **item_amount** type= int default= 1 <br>
+ - **item_id** type= int default= 0 <br><br>
+
+- **PLATFORM_H**
+
+  - **item_id** type= int default= 0 <br>
+  - **left_end_point** type= int default= 0 <br>
+  - **right_end_point** type= int default= 0 <br>
+  - **speed** type= int default= 100 <br><br>
+
+- **PLATFORM_V**
+
+  - **item_id** type= int default= 0 <br>
+  - **top_end_point** type= int default= 0 <br>
+  - **bottom_end_point** type= int default= 0 <br>
+  - **speed** type= int default= 100 <br><br>
+
+- **HAZARD_x (x=L,R,U,D)**
+
+  - **item_id** type= int default= 0 <br>
+  - **damage** type= int default= 100 <br><br>
