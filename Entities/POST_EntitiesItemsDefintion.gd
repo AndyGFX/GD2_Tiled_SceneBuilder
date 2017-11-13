@@ -36,7 +36,7 @@ var ent_ammo = [
 # ---------------------------------------------------------------------
 var ent_granade = [
 	load("res://Entities/Granade/Entity_Granade_0.tscn")]
-	
+
 # ---------------------------------------------------------------------
 # HEALTH
 # ---------------------------------------------------------------------
@@ -105,7 +105,7 @@ var ent_enemy_h = [
 
 var ent_enemy_v = [
 	load("res://Entities/Enemies/Enemy_V/Entity_Enemy_V_0.tscn")]
-	
+
 # ---------------------------------------------------------------------
 # SWITCH
 # ---------------------------------------------------------------------
@@ -126,6 +126,19 @@ var ent_light = [
 
 var ent_platform_h = [
 	load("res://Entities/Platform/Platform_H/Entity_platform_H.tscn")]
-var ent_platform_v = [
-	load("res://Entities/Platform/Platform_V/Entity_platform_V.tscn")]	
 	
+var ent_platform_v = [
+	load("res://Entities/Platform/Platform_V/Entity_platform_V.tscn")]
+
+# ---------------------------------------------------------------------
+# HAZARD
+# ---------------------------------------------------------------------
+
+var ent_hazard_l = [
+	load("res://Entities/Enemies/Hazard_Left/Entity_hazard_Left.tscn")]
+var ent_hazard_r = [
+	load("res://Entities/Enemies/Hazard_Right/Entity_hazard_Right.tscn")]
+var ent_hazard_u = [
+	load("res://Entities/Enemies/Hazard_Up/Entity_hazard_Up.tscn")]
+var ent_hazard_d = [
+	load("res://Entities/Enemies/Hazard_Down/Entity_hazard_Down.tscn")]

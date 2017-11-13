@@ -16,6 +16,10 @@ material/material = SubResource( 1 )
 
 editor/display_folded = true
 
+[node name="Light 2" parent="Test_TMX/Entities"]
+
+editor/display_folded = true
+
 
 [editable path="Test_TMX"]
 [editable path="Test_TMX/Entities/Light 2"]

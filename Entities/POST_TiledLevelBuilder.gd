@@ -59,6 +59,10 @@ func BuildEntity(scene,node,obj):
 	if type == "LIGHT": Entity_LIGHT(scene,node,obj)
 	if type == "PLATFORM_H": Entity_PLATFORM_H(scene,node,obj)
 	if type == "PLATFORM_V": Entity_PLATFORM_V(scene,node,obj)
+	if type == "HAZARD_L": Entity_HAZARD_L(scene,node,obj)
+	if type == "HAZARD_R": Entity_HAZARD_R(scene,node,obj)
+	if type == "HAZARD_U": Entity_HAZARD_U(scene,node,obj)
+	if type == "HAZARD_D": Entity_HAZARD_D(scene,node,obj)
 
 # ---------------------------------------------------------
 # Prepare defaults
@@ -164,6 +168,21 @@ func CheckProperties(obj):
 		Check(obj,"bottom_end_point",0)
 		Check(obj,"speed",0)
 
+	if type == "HAZARD_L":
+		Check(obj,"item_id",0)
+		Check(obj,"damage",0)
+
+	if type == "HAZARD_R":
+		Check(obj,"item_id",0)
+		Check(obj,"damage",0)
+
+	if type == "HAZARD_D":
+		Check(obj,"item_id",0)
+		Check(obj,"damage",0)
+
+	if type == "HAZARD_U":
+		Check(obj,"item_id",0)
+		Check(obj,"damage",0)
 
 	return obj
 
@@ -366,6 +385,38 @@ func DumpProperties(obj):
 		Dump(obj,"top_end_point")
 		Dump(obj,"bottom_end_point")
 		Dump(obj,"speed")
+
+	if type == "HAZARD_L":
+		print("---------------------------------------------------------")
+		print("Entity: "+obj.get_name())
+		print("---------------------------------------------------------")
+		Dump(obj,"type")
+		Dump(obj,"item_id")
+		Dump(obj,"damage")
+
+	if type == "HAZARD_R":
+		print("---------------------------------------------------------")
+		print("Entity: "+obj.get_name())
+		print("---------------------------------------------------------")
+		Dump(obj,"type")
+		Dump(obj,"item_id")
+		Dump(obj,"damage")
+
+	if type == "HAZARD_U":
+		print("---------------------------------------------------------")
+		print("Entity: "+obj.get_name())
+		print("---------------------------------------------------------")
+		Dump(obj,"type")
+		Dump(obj,"item_id")
+		Dump(obj,"damage")
+
+	if type == "HAZARD_D":
+		print("---------------------------------------------------------")
+		print("Entity: "+obj.get_name())
+		print("---------------------------------------------------------")
+		Dump(obj,"type")
+		Dump(obj,"item_id")
+		Dump(obj,"damage")
 
 # -------------------------------------------------------
 # Helpert for dump entity property to console
@@ -928,7 +979,7 @@ func Entity_PLATFORM_H(scene,node,obj):
 	# add to scene under parent
 	node.add_child(platform)
 	platform.set_owner(scene)
-	
+
 # -------------------------------------------------------
 # PLATFORM MOVE VERTICALY
 # -------------------------------------------------------
@@ -964,3 +1015,130 @@ func Entity_PLATFORM_V(scene,node,obj):
 	node.add_child(platform)
 	platform.set_owner(scene)
 
+# -------------------------------------------------------
+# HAZARD LEFT
+# -------------------------------------------------------
+func Entity_HAZARD_L(scene,node,obj):
+
+	var item_id = obj.get_meta("item_id")
+	if (item_id>ent_hazard_l.size()):
+		print("ERROR: HAZARD L item ID > "+str(ent_hazard_l.size()))
+
+	# read meta data
+	var damage = obj.get_meta("damage")
+	var pos = obj.get_pos()
+	var name = obj.get_name()
+
+	# create entity instance
+	var hazard = ent_hazard_l[item_id].instance()
+
+	# free previous object
+	obj.free()
+
+	# set properties
+	hazard.damage = damage
+
+
+	# set name and position
+	hazard.set_name(name)
+	hazard.set_pos(pos)
+
+	# add to scene under parent
+	node.add_child(hazard)
+	hazard.set_owner(scene)
+
+# -------------------------------------------------------
+# HAZARD RIGHT
+# -------------------------------------------------------
+func Entity_HAZARD_R(scene,node,obj):
+
+	var item_id = obj.get_meta("item_id")
+	if (item_id>ent_hazard_r.size()):
+		print("ERROR: HAZARD R item ID > "+str(ent_hazard_r.size()))
+
+	# read meta data
+	var damage = obj.get_meta("damage")
+	var pos = obj.get_pos()
+	var name = obj.get_name()
+
+	# create entity instance
+	var hazard = ent_hazard_r[item_id].instance()
+
+	# free previous object
+	obj.free()
+
+	# set properties
+	hazard.damage = damage
+
+
+	# set name and position
+	hazard.set_name(name)
+	hazard.set_pos(pos)
+
+	# add to scene under parent
+	node.add_child(hazard)
+	hazard.set_owner(scene)
+
+# -------------------------------------------------------
+# HAZARD UP
+# -------------------------------------------------------
+func Entity_HAZARD_U(scene,node,obj):
+
+	var item_id = obj.get_meta("item_id")
+	if (item_id>ent_hazard_u.size()):
+		print("ERROR: HAZARD U item ID > "+str(ent_hazard_u.size()))
+
+	# read meta data
+	var damage = obj.get_meta("damage")
+	var pos = obj.get_pos()
+	var name = obj.get_name()
+
+	# create entity instance
+	var hazard = ent_hazard_u[item_id].instance()
+
+	# free previous object
+	obj.free()
+
+	# set properties
+	hazard.damage = damage
+
+
+	# set name and position
+	hazard.set_name(name)
+	hazard.set_pos(pos)
+
+	# add to scene under parent
+	node.add_child(hazard)
+	hazard.set_owner(scene)
+
+# -------------------------------------------------------
+# HAZARD UP
+# -------------------------------------------------------
+func Entity_HAZARD_D(scene,node,obj):
+
+	var item_id = obj.get_meta("item_id")
+	if (item_id>ent_hazard_d.size()):
+		print("ERROR: HAZARD D item ID > "+str(ent_hazard_d.size()))
+
+	# read meta data
+	var damage = obj.get_meta("damage")
+	var pos = obj.get_pos()
+	var name = obj.get_name()
+
+	# create entity instance
+	var hazard = ent_hazard_d[item_id].instance()
+
+	# free previous object
+	obj.free()
+
+	# set properties
+	hazard.damage = damage
+
+
+	# set name and position
+	hazard.set_name(name)
+	hazard.set_pos(pos)
+
+	# add to scene under parent
+	node.add_child(hazard)
+	hazard.set_owner(scene)
