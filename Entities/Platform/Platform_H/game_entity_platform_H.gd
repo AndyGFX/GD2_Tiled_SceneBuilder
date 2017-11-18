@@ -10,7 +10,7 @@ export var right_end_point = 0
 export var speed = 0
 
 func _ready():
-	add_to_group("PLATFORM")
+	add_to_group("SOLID")
 	platform = get_node(".")
 	connect("area_enter", self, "_on_area_enter")
 	connect("body_enter", self, "_on_body_enter")
